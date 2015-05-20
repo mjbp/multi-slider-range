@@ -1,5 +1,5 @@
 .range {
-    width: 100px;
+    width: 50%;
     display: inline-block;
     vertical-align: top;
     position: relative;
@@ -24,11 +24,11 @@
     background-color: #eee;
 }
 .range > .slider {
-    height: 12px;
+    height: 30px;
     border-bottom: none;
     position: absolute;
     top: 1px;
-    width: 9px;
+    width: 14px;
 }
 .range > .slider:before,
 .range > .slider:after {

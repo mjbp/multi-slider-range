@@ -121,6 +121,10 @@
         var ratioLeft = (mouseX - slide.rangeXStart) / slide.rangeWidth;
         return ratioLeft * slide.width + slide.min;
     }
+    function positioneXToValue(slide, posX) {
+        var ratioLeft = (posX - slide.rangeXStart) / slide.rangeWidth;
+        return ratioLeft * slide.width + slide.min;
+    }
     function nearestStep(slide, value) {
         if (value < slide.min) return slide.min;
         if (value > slide.max) return slide.max;
@@ -194,10 +198,14 @@
                 e = getEvent(e);
                 removeListener('mouseup', endHandleDrag, document.documentElement);
                 removeListener('mousemove', handleDrag, document.documentElement);
+                removeListener('touchend', endHandleDrag, document.documentElement);
+                removeListener('touchmove', handleDrag, document.documentElement);
             };
             var handleDrag = function (e) {
                 e = getEvent(e);
-                var rawValue = mouseXToValue(slide, e.pageX);
+                var posX = e.changedTouches ? e.changedTouches[0].pageX : e.pageX;
+                //var rawValue = mouseXToValue(slide, e.pageX);
+                var rawValue = positioneXToValue(slide, posX);
                 var value = nearestStep(slide, rawValue);
                 if (slide.value !== value) {
                     moveSlider(slider, slide, value);
@@ -205,6 +213,8 @@
             }
             addListener('mouseup', endHandleDrag, document.documentElement);
             addListener('mousemove', handleDrag, document.documentElement);
+            addListener('touchend', endHandleDrag, document.documentElement);
+            addListener('touchmove', handleDrag, document.documentElement);
         }
     }
 
@@ -241,6 +251,7 @@
 
     addListener('mousedown', beginHandleDrag, document.documentElement);
     addListener('keydown', handleSlide, document.documentElement);
+    addListener('touchstart', beginHandleDrag, document.documentElement);
 
     var initializeSliders = partial(each, initializeSlider);
     var initializeInputs = partial(each, initializeInput);
